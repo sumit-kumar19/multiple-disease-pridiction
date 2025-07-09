@@ -28,9 +28,10 @@ function Heart() {
 
     const handleSubmit = async () => {
         const user_input = Object.values(formData).map(Number);
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
         
         try {
-            const response = await fetch("http://localhost:5000/predict-heart", {
+            const response = await fetch(`${API_URL}/predict-heart`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

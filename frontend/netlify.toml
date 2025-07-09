@@ -1,11 +1,33 @@
 [build]
+  base = "frontend"
   publish = "dist"
   command = "npm run build"
+  
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_VERSION = "10"
 
 [dev]
   command = "npm run dev"
+  
+[context.production.environment]
+  VITE_API_URL = "https://your-backend-api.render.com"
+
+[context.deploy-preview.environment]
+  VITE_API_URL = "https://your-backend-api.render.com"
+
+[context.branch-deploy.environment]
+  VITE_API_URL = "https://your-backend-api.render.com"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
