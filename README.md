@@ -1,129 +1,197 @@
-<h1 align="center" id="title">Multiple Disease pridiction</h1>
+# Multiple Disease Prediction System
 
-<p align="center"><img src="https://socialify.git.ci/sumit-kumar19/multiple-disease-pridiction/image?font=Source+Code+Pro&amp;language=1&amp;name=1&amp;owner=1&amp;pattern=Solid&amp;stargazers=1&amp;theme=Auto" alt="project-image"></p>
+A machine learning application that predicts heart disease and diabetes using trained KNN models. The system consists of a Flask backend API and a React frontend interface.
 
-<p id="description">This project is a web application designed to predict the likelihood of various diseases based on user input.</p>
+## Features
 
-  
-  
-<h2>🧐 Features</h2>
+- **Heart Disease Prediction**: Predicts the likelihood of heart disease based on medical parameters
+- **Diabetes Prediction**: Predicts the likelihood of diabetes based on health metrics
+- **Responsive Design**: Fully responsive and compatible with all devices including desktops, tablets and smartphones
+- **Real-time Predictions**: Fast API responses using pre-trained machine learning models
 
-Here're some of the project's best features:
+## Project Structure
 
-*   Disease Prediction: Allows users to input their symptoms or medical data to predict the likelihood of multiple diseases using machine learning models.
-*   User-Friendly Interface: Intuitive and easy-to-use interface for seamless navigation and data input.
-*   Real-Time Predictions: Provides instant results based on the entered data.
-*   Customizable Data Inputs: Supports input for various health parameters like age gender symptoms and medical history.
-*   Responsive Design: Fully responsive and compatible with all devices including desktops tablets and smartphones.
+```
+multiple-disease-prediction/
+├── backend/
+│   ├── app.py              # Flask API server
+│   ├── *.joblib            # Trained ML models
+│   └── *.csv               # Training datasets
+├── frontend/
+│   ├── src/                # React source code
+│   ├── package.json        # Node.js dependencies
+│   ├── vite.config.js      # Vite configuration
+│   └── netlify.toml        # Netlify deployment config
+├── requirements.txt        # Python dependencies
+├── render.yaml            # Render deployment config
+├── Procfile              # Heroku/Render process file
+└── README.md             # This file
+```
 
+## Local Development Setup
 
-  # Installation Guide for Multiple Disease Prediction
+### Prerequisites
+- Python 3.8+ 
+- Node.js 16+
+- npm or yarn
 
-Follow the steps below to set up the **Multiple Disease Prediction** project on your local machine:
+### Backend Setup
 
----
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/sumit-kumar19/multiple-disease-pridiction.git
+   cd multiple-disease-pridiction
+   ```
 
-### Step 1: Clone the Repository
+2. **Create Virtual Environment (Recommended)**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-Clone the repository to your local machine using the following command:
+3. **Install Python Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Run Backend Server**
+   ```bash
+   cd backend
+   python app.py
+   ```
+   The API will be available at `http://localhost:5000`
+
+### Frontend Setup
+
+1. **Navigate to Frontend Directory**
+   ```bash
+   cd frontend
+   ```
+
+2. **Install Node Dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start Development Server**
+   ```bash
+   npm run dev
+   ```
+   The frontend will be available at `http://localhost:5173`
+
+## API Endpoints
+
+- `GET /health` - Health check endpoint
+- `POST /predict-heart` - Heart disease prediction
+- `POST /predict-diabetes` - Diabetes prediction
+
+### Example API Usage
 
 ```bash
-git clone https://github.com/sumit-kumar19/multiple-disease-pridiction.git
+# Health check
+curl -X GET http://localhost:5000/health
+
+# Heart disease prediction
+curl -X POST http://localhost:5000/predict-heart \
+  -H "Content-Type: application/json" \
+  -d '{"input": [63, 1, 3, 145, 233, 1, 0, 150, 0, 2.3, 0, 0, 1]}'
+
+# Diabetes prediction  
+curl -X POST http://localhost:5000/predict-diabetes \
+  -H "Content-Type: application/json" \
+  -d '{"input": [6, 148, 72, 35, 0, 33.6, 0.627, 50]}'
 ```
-### Step 2: Navigate to the Project Directory
-Move into the project directory:
-```bash
-cd multiple-disease-pridiction
-```
-### Step 3: Backend Setup
-Navigate to the Backend Directory:
-
-```bash
-cd backend
-
-```
-Create a Virtual Environment:
-
-```
-python -m venv venv
-```
-
-### Install Required Python Packages:
- intall all the library included
-```
-
-pip install 
-```
-
-### Run the Backend Server:
-
-```bash
-python app.py
-```
-
-### Step 4: Frontend Setup
-1.Navigate to the Frontend Directory:
-
-```bash
-cd ../frontend
-```
-2.Install Required Node Modules:
-
-```bash
-npm install
-```
-4.Start the Frontend Server:
-```bash
-npm run dev
-```
-5. Access the Application
-Open your web browser and navigate to the following URL to access the application:
-
-arduino
-Copy code
-http://localhost:5173
-
-
-### You have now successfully set up the Multiple Disease Prediction project!
 
 ## Deployment
 
-This project is configured for deployment on Render (backend) and optionally on Netlify (frontend).
-
 ### Backend Deployment on Render
 
-1. **Fork or clone this repository** to your GitHub account.
+1. **Automatic Deployment (Recommended)**
+   - Fork this repository to your GitHub account
+   - Connect your GitHub account to [Render](https://render.com)
+   - Create a new "Web Service" from your forked repository
+   - Render will automatically use the `render.yaml` configuration
 
-2. **Create a new Web Service on Render:**
+2. **Manual Configuration**
+   - Create a new "Web Service" on Render
    - Connect your GitHub repository
-   - Select the repository: `multiple-disease-pridiction`
-   - Use the following settings:
+   - Use these settings:
      - **Environment**: Python
      - **Build Command**: `pip install -r requirements.txt`
-     - **Start Command**: `cd backend && gunicorn app:app`
+     - **Start Command**: `cd backend && gunicorn --bind 0.0.0.0:$PORT app:app`
      - **Plan**: Free
 
-3. **Alternative using render.yaml**: 
-   - The project includes a `render.yaml` file for automated deployment
-   - Simply connect your repository and Render will use the configuration automatically
+3. **Alternative Platforms**
+   - **Heroku**: The included `Procfile` supports Heroku deployment
+   - **Railway**: Compatible with the current configuration
+   - **Python Anywhere**: Can be deployed with minor adjustments
 
-### Frontend Deployment on Netlify (Optional)
+### Frontend Deployment on Netlify
 
-If you want to deploy the frontend separately:
-
-1. **Navigate to the frontend folder**: The React frontend is available in the `frontend/` directory
-
-2. **Deploy to Netlify:**
-   - Connect your GitHub repository to Netlify
-   - Set the build directory to `frontend/`
+1. **Automatic Deployment**
+   - Fork this repository to your GitHub account
+   - Connect your GitHub account to [Netlify](https://netlify.com)
+   - Create a new site from your forked repository
+   - Set the base directory to `frontend/`
    - Netlify will automatically detect the build settings from `netlify.toml`
 
-3. **Update CORS settings**: Remember to update the Flask CORS configuration in `backend/app.py` to allow requests from your Netlify domain.
+2. **Manual Configuration**
+   - **Build Command**: `npm run build`
+   - **Publish Directory**: `dist`
+   - **Base Directory**: `frontend`
 
-### Environment Variables
+3. **Update API URL**
+   - After backend deployment, update the API URL in your frontend code
+   - Update CORS settings in `backend/app.py` to allow requests from your Netlify domain
 
-Make sure to set any required environment variables in your deployment platform if needed.
+### Alternative Frontend Deployment
 
+- **Vercel**: Compatible with the current Vite setup
+- **GitHub Pages**: Requires additional configuration for SPA routing
+- **Firebase Hosting**: Works with the build output
 
+## Environment Variables
 
+For production deployment, consider setting:
 
+- `FLASK_ENV=production` (for Flask)
+- `PORT` (automatically set by most platforms)
+- Custom model paths if models are stored separately
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Model Loading Errors**
+   - Ensure scikit-learn is installed: `pip install scikit-learn`
+   - Check model file paths in `app.py`
+
+2. **CORS Errors**
+   - Update CORS configuration in `app.py` for your domain
+   - For production, replace `support_credentials=True` with specific origins
+
+3. **Build Failures**
+   - Ensure all dependencies are listed in `requirements.txt`
+   - Check Python version compatibility (3.8+ recommended)
+
+4. **Frontend Build Issues**
+   - Run `npm install` to ensure all dependencies are installed
+   - Clear cache: `npm run build --force`
+
+### Performance Notes
+
+- Models are loaded once at startup for better performance
+- API includes error handling and health checks
+- Frontend is optimized for production builds
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test locally
+5. Submit a pull request
+
+## License
+
+This project is open source and available under the MIT License.
