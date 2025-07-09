@@ -86,6 +86,43 @@ http://localhost:5173
 
 ### You have now successfully set up the Multiple Disease Prediction project!
 
+## Deployment
+
+This project is configured for deployment on Render (backend) and optionally on Netlify (frontend).
+
+### Backend Deployment on Render
+
+1. **Fork or clone this repository** to your GitHub account.
+
+2. **Create a new Web Service on Render:**
+   - Connect your GitHub repository
+   - Select the repository: `multiple-disease-pridiction`
+   - Use the following settings:
+     - **Environment**: Python
+     - **Build Command**: `pip install -r requirements.txt`
+     - **Start Command**: `cd backend && gunicorn app:app`
+     - **Plan**: Free
+
+3. **Alternative using render.yaml**: 
+   - The project includes a `render.yaml` file for automated deployment
+   - Simply connect your repository and Render will use the configuration automatically
+
+### Frontend Deployment on Netlify (Optional)
+
+If you want to deploy the frontend separately:
+
+1. **Navigate to the frontend folder**: The React frontend is available in the `frontend/` directory
+
+2. **Deploy to Netlify:**
+   - Connect your GitHub repository to Netlify
+   - Set the build directory to `frontend/`
+   - Netlify will automatically detect the build settings from `netlify.toml`
+
+3. **Update CORS settings**: Remember to update the Flask CORS configuration in `backend/app.py` to allow requests from your Netlify domain.
+
+### Environment Variables
+
+Make sure to set any required environment variables in your deployment platform if needed.
 
 
 
