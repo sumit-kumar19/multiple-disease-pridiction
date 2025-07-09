@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
 import joblib
+import os
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -11,11 +12,12 @@ CORS(app, support_credentials=True)
 
 # Load the heart disease prediction model
 def load_model(file_name='knn_heart_model.joblib'):
-    return joblib.load(file_name)
+    path = os.path.join(os.path.dirname(__file__), file_name)
+    return joblib.load(path)
 
-# Load the diabetes prediction model
-def load_dmodel(file_name='./knn_diabetes_model.joblib'):
-    return joblib.load(file_name)
+def load_dmodel(file_name='knn_diabetes_model.joblib'):
+    path = os.path.join(os.path.dirname(__file__), file_name)
+    return joblib.load(path)
 
 # Load models at the start
 modeln = load_model()  # Heart disease model
