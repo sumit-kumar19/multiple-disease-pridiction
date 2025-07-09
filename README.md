@@ -132,16 +132,20 @@ curl -X POST http://localhost:5000/predict-diabetes \
    - Fork this repository to your GitHub account
    - Connect your GitHub account to [Netlify](https://netlify.com)
    - Create a new site from your forked repository
-   - Set the base directory to `frontend/`
    - Netlify will automatically detect the build settings from `netlify.toml`
+   - The `netlify.toml` file includes optimized configuration with Node.js version specification and security headers
 
-2. **Manual Configuration**
+2. **Environment Variables Configuration**
+   - In your Netlify site settings, add the following environment variable:
+     - **VITE_API_URL**: Your deployed backend URL (e.g., `https://your-backend.render.com`)
+   - The frontend will automatically use localhost:5000 for local development
+
+3. **Manual Configuration (if needed)**
    - **Build Command**: `npm run build`
    - **Publish Directory**: `dist`
    - **Base Directory**: `frontend`
 
-3. **Update API URL**
-   - After backend deployment, update the API URL in your frontend code
+4. **Update CORS Settings**
    - Update CORS settings in `backend/app.py` to allow requests from your Netlify domain
 
 ### Alternative Frontend Deployment
@@ -152,11 +156,26 @@ curl -X POST http://localhost:5000/predict-diabetes \
 
 ## Environment Variables
 
+### Backend
 For production deployment, consider setting:
 
 - `FLASK_ENV=production` (for Flask)
 - `PORT` (automatically set by most platforms)
 - Custom model paths if models are stored separately
+
+### Frontend
+The frontend uses environment variables for API configuration:
+
+- `VITE_API_URL`: The backend API URL
+  - **Local Development**: `http://localhost:5000` (default)
+  - **Production**: Set to your deployed backend URL (e.g., `https://your-backend.render.com`)
+
+Create a `.env` file in the `frontend/` directory for local development:
+```bash
+VITE_API_URL=http://localhost:5000
+```
+
+For Netlify deployment, set the `VITE_API_URL` environment variable in your Netlify site settings.
 
 ## Troubleshooting
 

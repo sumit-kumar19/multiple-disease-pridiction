@@ -182,8 +182,10 @@ function Daibites() {
             parseFloat(formData.BMI), parseFloat(formData.DiabetesPedigreeFunction), parseFloat(formData.Age)
         ];
 
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
         try {
-            const response = await fetch("http://localhost:5000/predict-diabetes", {
+            const response = await fetch(`${API_URL}/predict-diabetes`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
