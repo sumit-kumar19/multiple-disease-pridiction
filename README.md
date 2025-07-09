@@ -1,216 +1,163 @@
-# Multiple Disease Prediction System
+# 🩺 Multiple Disease Prediction
 
-A machine learning application that predicts heart disease and diabetes using trained KNN models. The system consists of a Flask backend API and a React frontend interface.
+A simple prediction system for **heart disease** and **diabetes**, featuring a Flask‑based REST API (backend) and an optional Streamlit UI (frontend). Pre‑trained KNN models (`.joblib`) provide binary predictions (0 = Negative, 1 = Positive).
 
-## Features
+---
 
-- **Heart Disease Prediction**: Predicts the likelihood of heart disease based on medical parameters
-- **Diabetes Prediction**: Predicts the likelihood of diabetes based on health metrics
-- **Responsive Design**: Fully responsive and compatible with all devices including desktops, tablets and smartphones
-- **Real-time Predictions**: Fast API responses using pre-trained machine learning models
-
-## Project Structure
+## 📁 Repository Structure
 
 ```
-multiple-disease-prediction/
+multiple-disease-pridiction/
 ├── backend/
-│   ├── app.py              # Flask API server
-│   ├── *.joblib            # Trained ML models
-│   └── *.csv               # Training datasets
-├── frontend/
-│   ├── src/                # React source code
-│   ├── package.json        # Node.js dependencies
-│   ├── vite.config.js      # Vite configuration
-│   └── netlify.toml        # Netlify deployment config
-├── requirements.txt        # Python dependencies
-├── render.yaml            # Render deployment config
-├── Procfile              # Heroku/Render process file
-└── README.md             # This file
+│   ├── app.py
+│   ├── knn_heart_model.joblib
+│   ├── knn_diabetes_model.joblib
+│   └── requirements.txt
+└── frontend/ (optional)
+    └── streamlit_app.py
 ```
 
-## Local Development Setup
+---
 
-### Prerequisites
-- Python 3.8+ 
-- Node.js 16+
-- npm or yarn
+## ⚙️ Features
 
-### Backend Setup
+- **REST API Endpoints (Flask)**
+  - `GET /health` — Returns `{ "status": "healthy" }`
+  - `POST /predict-heart` — Accepts JSON `{ "input": [...] }`, returns `{ "prediction": 0|1 }`
+  - `POST /predict-diabetes` — Accepts JSON `{ "input": [...] }`, returns `{ "prediction": 0|1 }`
 
-1. **Clone the Repository**
+- **CORS enabled** for cross‑origin requests.
+
+- **Streamlit UI (optional)** — Interactive web form for both diseases.
+
+---
+
+## 🛠️ Backend: Run Locally
+
+1. **Clone & navigate**  
    ```bash
    git clone https://github.com/sumit-kumar19/multiple-disease-pridiction.git
-   cd multiple-disease-pridiction
+   cd multiple-disease-pridiction/backend
    ```
 
-2. **Create Virtual Environment (Recommended)**
+2. **Create & activate virtual env**  
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   python3 -m venv venv
+   source venv/bin/activate      # Linux / macOS
+   venv\Scripts\activate       # Windows
    ```
 
-3. **Install Python Dependencies**
+3. **Install dependencies**  
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Run Backend Server**
+4. **Verify model files**  
+   Ensure `knn_heart_model.joblib` and `knn_diabetes_model.joblib` are present in `backend/`.
+
+5. **Start the API**  
    ```bash
-   cd backend
    python app.py
    ```
-   The API will be available at `http://localhost:5000`
+   - Dev server binds to `http://0.0.0.0:5000` by default.
 
-### Frontend Setup
-
-1. **Navigate to Frontend Directory**
+6. **Test endpoints**  
    ```bash
-   cd frontend
+   curl http://127.0.0.1:5000/health
+   ```
+   ```bash
+   curl -X POST http://127.0.0.1:5000/predict-heart \
+     -H "Content-Type: application/json" \
+     -d '{"input":[60,1,3,140,289,0,2,172,0,0.0,1,2,2]}'
    ```
 
-2. **Install Node Dependencies**
+---
+
+## 🖥️ Optional Frontend: Streamlit UI
+
+1. **Install Streamlit** in your backend env (or separate env):  
    ```bash
-   npm install
+   pip install streamlit requests
    ```
 
-3. **Start Development Server**
+2. **Create `streamlit_app.py`** in `frontend/` (example in repo).
+
+3. **Run the UI**  
    ```bash
-   npm run dev
+   cd ../frontend
+   streamlit run streamlit_app.py
    ```
-   The frontend will be available at `http://localhost:5173`
+   - Opens at `http://localhost:8501`
 
-## API Endpoints
+---
 
-- `GET /health` - Health check endpoint
-- `POST /predict-heart` - Heart disease prediction
-- `POST /predict-diabetes` - Diabetes prediction
+## 📦 Dependencies
 
-### Example API Usage
-
-```bash
-# Health check
-curl -X GET http://localhost:5000/health
-
-# Heart disease prediction
-curl -X POST http://localhost:5000/predict-heart \
-  -H "Content-Type: application/json" \
-  -d '{"input": [63, 1, 3, 145, 233, 1, 0, 150, 0, 2.3, 0, 0, 1]}'
-
-# Diabetes prediction  
-curl -X POST http://localhost:5000/predict-diabetes \
-  -H "Content-Type: application/json" \
-  -d '{"input": [6, 148, 72, 35, 0, 33.6, 0.627, 50]}'
+**Backend** (`backend/requirements.txt`):
+```txt
+Flask>=2.0.0
+Flask-CORS>=3.0.0
+numpy>=1.21.0
+scikit-learn>=1.0.0
+joblib>=1.0.0
+gunicorn>=20.0.0
 ```
 
-## Deployment
-
-### Backend Deployment on Render
-
-1. **Automatic Deployment (Recommended)**
-   - Fork this repository to your GitHub account
-   - Connect your GitHub account to [Render](https://render.com)
-   - Create a new "Web Service" from your forked repository
-   - Render will automatically use the `render.yaml` configuration
-
-2. **Manual Configuration**
-   - Create a new "Web Service" on Render
-   - Connect your GitHub repository
-   - Use these settings:
-     - **Environment**: Python
-     - **Build Command**: `pip install -r requirements.txt`
-     - **Start Command**: `cd backend && gunicorn --bind 0.0.0.0:$PORT app:app`
-     - **Plan**: Free
-
-3. **Alternative Platforms**
-   - **Heroku**: The included `Procfile` supports Heroku deployment
-   - **Railway**: Compatible with the current configuration
-   - **Python Anywhere**: Can be deployed with minor adjustments
-
-### Frontend Deployment on Netlify
-
-1. **Automatic Deployment**
-   - Fork this repository to your GitHub account
-   - Connect your GitHub account to [Netlify](https://netlify.com)
-   - Create a new site from your forked repository
-   - Netlify will automatically detect the build settings from `netlify.toml`
-   - The `netlify.toml` file includes optimized configuration with Node.js version specification and security headers
-
-2. **Environment Variables Configuration**
-   - In your Netlify site settings, add the following environment variable:
-     - **VITE_API_URL**: Your deployed backend URL (e.g., `https://your-backend.render.com`)
-   - The frontend will automatically use localhost:5000 for local development
-
-3. **Manual Configuration (if needed)**
-   - **Build Command**: `npm run build`
-   - **Publish Directory**: `dist`
-   - **Base Directory**: `frontend`
-
-4. **Update CORS Settings**
-   - Update CORS settings in `backend/app.py` to allow requests from your Netlify domain
-
-### Alternative Frontend Deployment
-
-- **Vercel**: Compatible with the current Vite setup
-- **GitHub Pages**: Requires additional configuration for SPA routing
-- **Firebase Hosting**: Works with the build output
-
-## Environment Variables
-
-### Backend
-For production deployment, consider setting:
-
-- `FLASK_ENV=production` (for Flask)
-- `PORT` (automatically set by most platforms)
-- Custom model paths if models are stored separately
-
-### Frontend
-The frontend uses environment variables for API configuration:
-
-- `VITE_API_URL`: The backend API URL
-  - **Local Development**: `http://localhost:5000` (default)
-  - **Production**: Set to your deployed backend URL (e.g., `https://your-backend.render.com`)
-
-Create a `.env` file in the `frontend/` directory for local development:
-```bash
-VITE_API_URL=http://localhost:5000
+**Frontend** (if used):
+```txt
+streamlit>=1.0
+requests>=2.0
 ```
 
-For Netlify deployment, set the `VITE_API_URL` environment variable in your Netlify site settings.
+---
 
-## Troubleshooting
+## 🚀 Deployment
 
-### Common Issues
+### A. Flask API → Render.com
 
-1. **Model Loading Errors**
-   - Ensure scikit-learn is installed: `pip install scikit-learn`
-   - Check model file paths in `app.py`
+1. Add `render.yaml` to repo root:
+   ```yaml
+   services:
+     - type: web
+       name: disease-api
+       env: python
+       buildCommand: pip install -r backend/requirements.txt
+       startCommand: gunicorn app:app
+       workingDir: backend
+       plan: free
+   ```
+2. Connect your GitHub repo in Render → “Create Web Service” → Render auto‑deploys.
 
-2. **CORS Errors**
-   - Update CORS configuration in `app.py` for your domain
-   - For production, replace `support_credentials=True` with specific origins
+### B. Streamlit UI → Streamlit Community Cloud
 
-3. **Build Failures**
-   - Ensure all dependencies are listed in `requirements.txt`
-   - Check Python version compatibility (3.8+ recommended)
+1. Go to [Streamlit Cloud](https://share.streamlit.io/)
+2. “New app” → select `frontend/streamlit_app.py` → deploy.
 
-4. **Frontend Build Issues**
-   - Run `npm install` to ensure all dependencies are installed
-   - Clear cache: `npm run build --force`
+---
 
-### Performance Notes
+## ⚠️ Troubleshooting
 
-- Models are loaded once at startup for better performance
-- API includes error handling and health checks
-- Frontend is optimized for production builds
+- **FileNotFoundError**:  
+  Ensure both `.joblib` model files are committed under `backend/`.
+- **Port conflicts**:  
+  - Flask: uses `PORT` env var if set.  
+  - Streamlit: uses port `8501` by default.
+- **CORS errors**:  
+  Already enabled via `Flask-CORS`.
 
-## Contributing
+---
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test locally
-5. Submit a pull request
+## 🤝 Contributing
 
-## License
+1. Fork the repo  
+2. Create a feature branch (`git checkout -b feat/your-feature`)  
+3. Commit your changes (`git commit -m "feat: add …"`)  
+4. Push (`git push origin feat/your-feature`)  
+5. Open a Pull Request
 
-This project is open source and available under the MIT License.
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.  
+Feel free to use and modify it as you wish!
